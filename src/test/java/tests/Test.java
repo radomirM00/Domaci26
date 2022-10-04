@@ -1,33 +1,29 @@
 package tests;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.*;
-import pages.HomePage;
+import org.testng.annotations.BeforeClass;
 import pages.LoginPage;
 
-public class Test {
+public class Test{
     private LoginPage loginPage;
-    private HomePage homePage;
+    private WebDriver driver;
+    private WebDriverWait driverWait;
     @BeforeClass
-    public void setup(){
+    public void beforeClass(){
         System.setProperty("webdriver.chrome.driver","C:\\chromedriver\\chromedriver.exe");
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.saucedemo.com");
-        loginPage = new LoginPage(driver);
-        //homePage = new HomePage(driver);
+        driver = new ChromeDriver();
+        driver.get("https://www.saucedemo.com/");
+        loginPage = new LoginPage(driver,driverWait);
     }
+
     @org.testng.annotations.Test
-    public void logInTest(){
-        loginPage.logIn("standard_user","secret_sauce");
+    public void logIn(){
+        loginPage.logIn();
+        String actualUrl = driver.getCurrentUrl();
         String expectedUrl = "https://www.saucedemo.com/inventory.html";
-        String actualUrl = loginPage.getDriver().getCurrentUrl();
         Assert.assertEquals(actualUrl,expectedUrl);
     }
-
-
-
 }
